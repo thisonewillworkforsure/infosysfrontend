@@ -24,7 +24,7 @@ export class AccountService {
  }
 
   getOneAccount(account : Account) : Observable<Account>{
-    return this.httpClient.post<Account>(this.baseUrl,account);
+    return this.httpClient.post<Account>(this.baseUrl+"/login",account);
   }
 
   
