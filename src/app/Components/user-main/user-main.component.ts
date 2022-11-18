@@ -26,7 +26,6 @@ export class UserMainComponent implements OnInit {
 
   ngOnInit(): void {
     this.account = this.authService.currentAccount;
-    console.log(this.account);
   }
 
   deposit(): void{
