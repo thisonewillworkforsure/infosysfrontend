@@ -4,11 +4,11 @@ import { Account } from 'src/app/Models/Account';
 import { AccountService } from 'src/app/Services/account.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
-export class LoginComponent implements OnInit {
+export class RegisterComponent implements OnInit {
 
   account : Account = {
     id : 0,
@@ -22,13 +22,9 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  attemptToLogin() : void{
-      this.accountService.getOneAccount(this.account).subscribe((Response)=>{
-        console.log(Response);
-      });
-  }
-
-  goToRegister() : void{
-    this.router.navigate(["register"]);
+  registerUser(){
+    this.accountService.createAccount(this.account).subscribe((Response)=>{
+      this.router.navigate(["login"]);
+    });
   }
 }
