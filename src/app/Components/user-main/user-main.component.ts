@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Account } from 'src/app/Models/Account';
 import { AccountService } from 'src/app/Services/account.service';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -21,7 +21,8 @@ export class UserMainComponent implements OnInit {
   depositAmount : number = 0.0;
   withdrawAmount : number = 0.0;
 
-  constructor(private activatedRoute : ActivatedRoute, private authService : AuthService, private accountService : AccountService) { }
+  constructor(private activatedRoute : ActivatedRoute, private authService : AuthService, private accountService : AccountService,
+    private router : Router) { }
 
   ngOnInit(): void {
     this.account = this.authService.currentAccount;
@@ -29,6 +30,7 @@ export class UserMainComponent implements OnInit {
   }
 
   deposit(): void{
+    if(this.depositAmount < 0) return;
     this.account.balance += this.depositAmount;
     this.accountService.updateAccount(this.account).subscribe((Response)=>{
       this.account = Response;
@@ -36,12 +38,16 @@ export class UserMainComponent implements OnInit {
     })
   }
   withdraw(): void{
-    if(this.withdrawAmount > this.account.balance) return;
+    if(this.withdrawAmount > this.account.balance || this.withdrawAmount < 0) return;
     this.account.balance -= this.withdrawAmount;
     this.accountService.updateAccount(this.account).subscribe((Response)=>{
       this.account = Response;
       this.withdrawAmount = 0;
     })
+  }
 
+  logout(): void{
+    this.authService.resetCurrentAccount();
+    this.router.navigate([""]);
   }
 }
